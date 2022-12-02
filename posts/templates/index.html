@@ -29,6 +29,15 @@
         </tr>
         {% endfor %}
     </table>
+
+    {% if posts.has_next %}
+        <a href="?page={{ posts.next_page_number }}">Siguiente</a>
+    {% endif %}
+
+    {% if posts.has_previous %}
+        <a href="?page={{ posts.previous_page_number }}">Anterior</a>
+    {% endif %}
+
     {% else %}
         <!-- Si el usuario no esta logeado sera redirigido a la ventana de inicio de sesion -->
         <h1>Necesita <a href="/login">Iniciar sesion</a> para ver los post</h1>

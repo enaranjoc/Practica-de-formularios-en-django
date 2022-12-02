@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, authenticate 
+from django.core.paginator import Paginator
 from .models import Post
 from .forms import PostForm
 
@@ -8,7 +9,11 @@ from .forms import PostForm
 
 # Create your views here.
 def index(request):
-    return render(request,'index.html', {'posts': Post.objects.all()})
+    posts = Post.objects.all()
+    paginator = Paginator(posts, 2)
+    num_pagina = request.GET.get('page')
+    pagina_actual = paginator.get_page(num_pagina)
+    return render(request,'index.html', {'posts': pagina_actual})
 
 def crearPost(request):
     if request.method == 'POST':
