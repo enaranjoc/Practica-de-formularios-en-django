@@ -3,6 +3,6 @@ from .models import Post
 # Register your models here.
 
 class PostAdmin(admin.ModelAdmin):
-    list_display = ('titulo', 'descripcion')
+    list_display = ('autor', 'titulo', 'descripcion')
 
 admin.site.register(Post, PostAdmin)

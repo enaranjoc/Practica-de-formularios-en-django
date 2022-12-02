@@ -7,11 +7,28 @@
     <title>Inicio</title>
 </head>
 <body>
+    {% if user.is_authenticated %}
+    <!-- Si el usuario esta autentificado puede ver los posts -->
     <h1>Esta es la pagina de inicio</h1>
     <h2>Post</h2>
-    {% for post in posts %}
-        <p>{{ post.titulo }}</p>
-        <p>{{ post.descripcion }}</p>
-    {% endfor %}
+
+    <table>
+        <tr>
+            <th>Autor</th>         
+            <th>Titulo</th>        
+            <th>Descripcion</th>       
+        </tr>
+        {% for post in posts %}
+        <tr>
+            <td>{{ post.autor }}</td>
+            <td>{{ post.titulo }}</td>
+            <td>{{ post.descripcion }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+        <!-- Si el usuario no esta logeado sera redirigido a la ventana de inicio de sesion -->
+        <h1>Necesita <a href="/login">Iniciar sesion</a> para ver los post</h1>
+    {% endif %}
 </body>
 </html>

@@ -7,6 +7,14 @@
     <title>Crear Post</title>
 </head>
 <body>
-    
+    {% if user.is_authenticated %}
+        <form action="{% url 'crear' %}" method="POST">
+            {% csrf_token %}
+            {{form}}
+            <input type="submit">
+        </form>
+    {% else %}
+        <h1>Necesita <a href="/login">Iniciar sesion</a> para crear un post</h1>
+    {% endif %}
 </body>
 </html>

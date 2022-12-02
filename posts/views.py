@@ -14,7 +14,10 @@ def crearPost(request):
     if request.method == 'POST':
         form = PostForm(request.POST)
         if form.is_valid():
-            form.save()
+            # form.save()
+            post = form.save(commit=False) #Con el parametro commit permite que los datos se guarden en la variable pos y no directamente en la bd
+            post.autor = request.user
+            post.save()
             return redirect('index')
     else:
         form = PostForm()
