@@ -25,4 +25,7 @@ urlpatterns = [
     path('crear/', views.crearPost, name='crear'),
     path('', include('django.contrib.auth.urls')), # url propia de django para obtener las rutas de login y logout
     path('registrarse/', views.registrarUsuario, name='registrarUsuario'),
+    path('post/<int:pk>', views.verPost, name='verPost'),
+    path('actualizar/<int:pk>', views.actualizarPost, name='actualizarPost'),
+    path('eliminar/<int:pk>', views.eliminarPost, name='eliminarPost'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) # Para trabajar con archivos

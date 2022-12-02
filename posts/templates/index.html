@@ -16,7 +16,8 @@
         <tr>
             <th>Autor</th>         
             <th>Titulo</th>        
-            <th>Descripcion</th>       
+            <th>Descripcion</th>   
+            <th>Ver</th>           
         </tr>
         {% for post in posts %}
         <tr>
@@ -24,6 +25,7 @@
             <td>{{ post.titulo }}</td>
             <td>{{ post.descripcion }}</td>
             <td><img src="{{ post.imagen.url }}" alt="" width="45px" height="45px"></td>
+            <td><a href="{% url 'verPost' post.id %}">Ver mas</a></td>
         </tr>
         {% endfor %}
     </table>

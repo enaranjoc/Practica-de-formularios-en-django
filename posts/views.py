@@ -48,3 +48,25 @@ def registrarUsuario(request):
     else:
         form = UserCreationForm()
         return render(request, 'registration/register.html', {'form': form})
+
+def verPost(request, pk):
+    post = Post.objects.get(id=pk)
+    return render(request, 'post.html', {'post': post})
+
+def actualizarPost(request, pk):
+    post = Post.objects.get(id=pk)
+    if request.method == 'POST':
+        form = PostForm(request.POST, request.FILES, instance=post)
+        if form.is_valid():
+            post.save()
+            return redirect('index')
+    else:
+        form = PostForm(instance=post)
+        return render(request, 'creacion.html', {'form': form})
+
+def eliminarPost(request, pk):
+    post = Post.objects.get(id=pk)
+    if request.method == 'POST':
+        post.delete()
+        return redirect('index')
+    return render(request, 'eliminar.html', {'post': post}) 
