@@ -23,6 +23,7 @@
             <td>{{ post.autor }}</td>
             <td>{{ post.titulo }}</td>
             <td>{{ post.descripcion }}</td>
+            <td><img src="{{ post.imagen.url }}" alt="" width="45px" height="45px"></td>
         </tr>
         {% endfor %}
     </table>

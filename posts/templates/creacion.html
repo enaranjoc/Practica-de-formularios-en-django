@@ -8,7 +8,8 @@
 </head>
 <body>
     {% if user.is_authenticated %}
-        <form action="{% url 'crear' %}" method="POST">
+        <form action="{% url 'crear' %}" method="POST" enctype="multipart/form-data">
+            <!-- enctype="multipart/form-data" con este atributo de html permite el envio de imagenes con el formulario -->
             {% csrf_token %}
             {{form}}
             <input type="submit">

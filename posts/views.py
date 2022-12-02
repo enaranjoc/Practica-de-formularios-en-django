@@ -12,7 +12,7 @@ def index(request):
 
 def crearPost(request):
     if request.method == 'POST':
-        form = PostForm(request.POST)
+        form = PostForm(request.POST, request.FILES)
         if form.is_valid():
             # form.save()
             post = form.save(commit=False) #Con el parametro commit permite que los datos se guarden en la variable pos y no directamente en la bd
