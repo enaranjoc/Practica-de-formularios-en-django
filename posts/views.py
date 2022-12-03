@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, authenticate 
 from django.core.paginator import Paginator
@@ -56,7 +56,8 @@ def registrarUsuario(request):
 
 def verPost(request, pk):
     post = Post.objects.get(id=pk)
-    return render(request, 'post.html', {'post': post})
+    tieneLike = request.user in post.likes.all()
+    return render(request, 'post.html', {'post': post, 'likes': post.cantidadLIkes(), 'tieneLike': tieneLike})
 
 def actualizarPost(request, pk):
     post = Post.objects.get(id=pk)
@@ -75,3 +76,11 @@ def eliminarPost(request, pk):
         post.delete()
         return redirect('index')
     return render(request, 'eliminar.html', {'post': post}) 
+
+def darLike(request, pk):
+    post = get_object_or_404(Post, id=pk)
+    if request.user in post.likes.all():
+        post.likes.remove(request.user)
+    else:
+        post.likes.add(request.user)
+    return redirect('/post/' + str(post.id))
