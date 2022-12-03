@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from posts import views
+from django.contrib.auth import views as auth_views
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -23,7 +24,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='index'),
     path('crear/', views.crearPost, name='crear'),
-    path('', include('django.contrib.auth.urls')), # url propia de django para obtener las rutas de login y logout
+    #path('', include('django.contrib.auth.urls')), # url propia de django para obtener las rutas de login y logout
+    path('login/', auth_views.LoginView.as_view(template_name = 'registration/login.html', redirect_authenticated_user=True), name ='login'),
+    path('logout/', auth_views.LogoutView.as_view()),
     path('registrarse/', views.registrarUsuario, name='registrarUsuario'),
     path('post/<int:pk>', views.verPost, name='verPost'),
     path('actualizar/<int:pk>', views.actualizarPost, name='actualizarPost'),

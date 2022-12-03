@@ -12,20 +12,21 @@
     <h1>{{post.titulo}}</h1>
     <p>{{post.descripcion}}</p>
     <p>{{post.cantidadLIkes}} likes</p>
-    <a href="{% url 'darLike' post.id %}">
+
+    <form action="{% url 'darLike' post.id %}" method="POST">
+        {% csrf_token %}
         {% if tieneLike %}
-        
-        <i class="fa-solid fa-thumbs-down"></i>
+            <button type="submit"><i class="fa-solid fa-thumbs-down"></i></button>
         {% else %}
-        <i class="fa-solid fa-thumbs-up"></i>
+            <button type="submit"><i class="fa-solid fa-thumbs-up"></i></button>
         {% endif %} 
-    </a>
+    </form>
+    
     <!-- Condicion para que solo el autor del post pueda actualizar o eliminar el post -->
     {% if post.autor == user %}
     <a href="{% url 'actualizarPost' post.id %}">Editar</a>
     <a href="{% url 'eliminarPost' post.id %}">Eliminar</a>
     {% endif %}
-
 
     <script src="https://kit.fontawesome.com/26084d939f.js" crossorigin="anonymous"></script>
 </body>

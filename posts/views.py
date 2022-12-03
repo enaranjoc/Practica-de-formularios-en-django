@@ -1,6 +1,8 @@
 from django.shortcuts import render,redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, authenticate 
+from django.contrib.auth.decorators import login_required
+from django.http import Http404
 from django.core.paginator import Paginator
 from .models import Post
 from .forms import PostForm
@@ -15,6 +17,7 @@ def index(request):
     pagina_actual = paginator.get_page(num_pagina)
     return render(request,'index.html', {'posts': pagina_actual})
 
+@login_required(login_url='login')
 def crearPost(request):
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES)
@@ -52,35 +55,50 @@ def registrarUsuario(request):
             return redirect('index')
     else:
         form = UserCreationForm()
-        return render(request, 'registration/register.html', {'form': form})
+    return render(request, 'registration/register.html', {'form': form})
 
+@login_required(login_url='login')
 def verPost(request, pk):
-    post = Post.objects.get(id=pk)
+    post = get_object_or_404(Post, id=pk)
     tieneLike = request.user in post.likes.all()
     return render(request, 'post.html', {'post': post, 'likes': post.cantidadLIkes(), 'tieneLike': tieneLike})
 
+@login_required(login_url='login')
 def actualizarPost(request, pk):
-    post = Post.objects.get(id=pk)
-    if request.method == 'POST':
-        form = PostForm(request.POST, request.FILES, instance=post)
-        if form.is_valid():
-            post.save()
-            return redirect('index')
-    else:
-        form = PostForm(instance=post)
-        return render(request, 'creacion.html', {'form': form})
-
-def eliminarPost(request, pk):
-    post = Post.objects.get(id=pk)
-    if request.method == 'POST':
-        post.delete()
-        return redirect('index')
-    return render(request, 'eliminar.html', {'post': post}) 
-
-def darLike(request, pk):
     post = get_object_or_404(Post, id=pk)
-    if request.user in post.likes.all():
-        post.likes.remove(request.user)
+    if post.autor == request.user:
+        if request.method == 'POST':
+            form = PostForm(request.POST, request.FILES, instance=post)
+            if form.is_valid():
+                post.save()
+                return redirect('index')
+        else:
+            form = PostForm(instance=post)
+            return render(request, 'creacion.html', {'form': form})
+    else: 
+        return redirect(f'/post/{post.id}')
+
+
+@login_required(login_url='login')
+def eliminarPost(request, pk):
+    post = get_object_or_404(Post, id=pk)
+    if post.autor == request.user:
+        if request.method == 'POST':
+            post.delete()
+            return redirect('index')
+        return render(request, 'eliminar.html', {'post': post})
+    else: 
+        return redirect(f'/post/{post.id}')
+
+
+@login_required(login_url='login')
+def darLike(request, pk):
+    if request.method == 'POST':
+        post = get_object_or_404(Post, id=pk)
+        if request.user in post.likes.all():
+            post.likes.remove(request.user)
+        else:
+            post.likes.add(request.user)
+        return redirect('/post/' + str(post.id))
     else:
-        post.likes.add(request.user)
-    return redirect('/post/' + str(post.id))
+        raise Http404()
