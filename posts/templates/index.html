@@ -1,46 +1,49 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicio</title>
-</head>
-<body>
-    {% if user.is_authenticated %}
-    <!-- Si el usuario esta autentificado puede ver los posts -->
-    <h1>Esta es la pagina de inicio</h1>
-    <h2>Post</h2>
 
-    <table>
-        <tr>
-            <th>Autor</th>         
-            <th>Titulo</th>        
-            <th>Descripcion</th>   
-            <th>Ver</th>           
-        </tr>
+{% extends 'base.html' %}
+{% block title%} Bienvenido a Blog EC {% endblock %}
+{% block content %}
+
+    <div class="row ">
+        {% if user.is_authenticated %}
+        <!-- Si el usuario esta autentificado puede ver los posts -->
+        
         {% for post in posts %}
-        <tr>
-            <td>{{ post.autor }}</td>
-            <td>{{ post.titulo }}</td>
-            <td>{{ post.descripcion }}</td>
-            <td><img src="{{ post.imagen.url }}" alt="" width="45px" height="45px"></td>
-            <td><a href="{% url 'verPost' post.id %}">Ver mas</a></td>
-        </tr>
+            <div class="col-sm-6 col-md-4 mb-3 ">
+                <div class="card" >
+                    {% if post.imagen.url == '/media/imagen' %}
+                        {% load static %}
+                        <img src="{% static 'img-defaul.png' %}" height="214px"  class="card-img-top" alt="{{ post.titulo|title }}">
+                    {% else %}
+                        <img src="{{ post.imagen.url }}" height="214px"  class="card-img-top" alt="{{ post.titulo|title }}">
+                    {% endif %}
+                        <div class="card-body">
+                      <h5 class="card-title fw-bold">{{ post.titulo|title }}</h5>
+                      <p class="fw-bold text-capitalize">{{ post.autor }}</p>
+                      <p class="card-text mb-1">{{ post.descripcion|capfirst }}</p>
+                      <a href="{% url 'verPost' post.id %}" class="btn btn-outline-primary">Ver mas</a>
+                    </div>
+                </div>
+            </div>
+            
+        
         {% endfor %}
-    </table>
-
-    {% if posts.has_next %}
-        <a href="?page={{ posts.next_page_number }}">Siguiente</a>
-    {% endif %}
-
-    {% if posts.has_previous %}
-<a href="?page={{ posts.previous_page_number }}">Anterior</a>
-    {% endif %}
-
-    {% else %}
-        <!-- Si el usuario no esta logeado sera redirigido a la ventana de inicio de sesion -->
-        <h1>Necesita <a href="/login">Iniciar sesion</a> para ver los post</h1>
-    {% endif %}
-</body>
-</html>
+        </div>
+        <div class="text-center">
+            {% if posts.has_next %}
+                <a href="?page={{ posts.next_page_number }}" class="btn btn-outline-secondary">Siguiente</a>
+            {% endif %}
+        
+            {% if posts.has_previous %}
+                <a href="?page={{ posts.previous_page_number }}" class="btn btn-outline-secondary">Anterior</a>
+            {% endif %}
+        
+            {% else %}
+                <!-- Si el usuario no esta logeado sera redirigido a la ventana de inicio de sesion -->
+                <h1>Necesita <a href="/login">Iniciar sesion</a> para ver los post</h1>
+            {% endif %}
+        </div>
+ 
+    
+    
+    
+{% endblock %}

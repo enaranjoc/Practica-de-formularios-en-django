@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-$x90ddj9&_+wfm1$6e9!8w+tl8^$y_d3=k7-zze_udx^d086%_'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -118,6 +118,8 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 #Configuracion para los archivos
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static"),)
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 LOGIN_REDIRECT_URL = 'index'
