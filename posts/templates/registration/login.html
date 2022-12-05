@@ -1,20 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    {% if next %}
-        <form action="/login/?next={{next}}" method="POST">
-    {% else %}
-        <form action="{% url 'login' %}" method="POST">
-    {% endif %}
-            {% csrf_token %}
-            {{form}}
-            <input type="submit" value="Iniciar sesion">
-        </form>
-</body>
-</html>
+{% extends 'base.html' %}
+{% block title %} Inicio de sesion {% endblock %}
+{% block nav %} {% endblock %}
+{% block content %}
+<div class="container col-xl-10 col-xxl-8 px-4 py-5">
+  <div class="row align-items-center g-lg-5 py-5">
+    <div class="col-lg-7 text-center text-lg-start">
+      <h1 class="display-4 fw-bold lh-1 mb-3">Vertically centered hero sign-up form</h1>
+      <p class="col-lg-10 fs-4">Below is an example form built entirely with Bootstrap’s form controls. Each required form group has a validation state that can be triggered by attempting to submit the form without completing it.</p>
+    </div>
+    <div class="col-md-10 mx-auto col-lg-5">
+      {% if next %}
+        <form action="/login/?next={{next}}" method="POST" class="p-4 p-md-5 border rounded-3 bg-light">
+      {% else %}
+        <form action="{% url 'login' %}" method="POST" class="p-4 p-md-5 border rounded-3 bg-light">
+      {% endif %}
+      {% csrf_token %}
+      {% for field in form %}
+        <div class="form-floating mb-3">
+            <input type="{{field.html_name}}" class="form-control rounded-3" id="{{ field.id_for_label }}" placeholder="name@example.com" name="{{field.html_name}}">
+            <label for="{{ field.id_for_label }}">{% if field.html_name == 'username' %} Usuario {% else %} Contrseña {% endif%} </label>
+        </div>
+      {% endfor %}
+        <div class="checkbox mb-3">
+          <label>
+            <input type="checkbox" value="remember-me"> Remember me
+          </label>
+        </div>
+        <button class="w-100 btn btn-lg btn-primary" type="submit">Sign up</button>
+        <hr class="my-3">
+        <p>No tienes cuenta? <a href="{% url 'registrarUsuario' %}">Registrate</a></p>
+      </form>
+    </div>
+         
+  </div>
+</div>
+
+{% endblock %}

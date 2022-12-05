@@ -1,17 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registrar usuario</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% block title %} Inicio de sesion {% endblock %}
+{% block nav %} {% endblock %}
+{% block content %}
+
     <h1>Registrarse</h1>
-    <form action="{% url 'registrarUsuario' %}" method="POST">
+    <form method="POST" action="{% url 'registrarUsuario' %}">
         {% csrf_token %}
-        {{form}}
-        <input type="submit" value="Registrase">
+        <div class="form-group">
+            <label for="{{ form.username.id_for_label }}">Usuario</label>
+            <input type="text" class="form-control" name="{{ form.username.html_name }}">
+            <small class="form-text text-muted">{{ form.username.help_text }}</small>
+        </div>
+        <div class="form-group">
+            <label for="{{ form.password1.id_for_label }}">Contraseña</label>
+            <input type="password" class="form-control" name="{{ form.password1.html_name }}">
+            <div class="unstyled">
+                <small class="form-text text-muted">{{ form.password1.help_text }}</small>
+            </div>
+            
+        <div class="form-group">
+            <label for="{{ form.password2.id_for_label }}">Confirmar contraseña</label>
+            <input type="password" class="form-control" name="{{ form.password2.html_name }}">
+            <small class="form-text text-muted">{{ form.password2.help_text }}</small>
+        </div>
+
+        <div class="error">
+            <small class="text-danger">{{form.errors}}</small>
+        </div>
+        <input type="submit" value="Registrarse">
+        <p>Ya tienes cuenta? <a href="{% url 'login' %}">Iniciar sesion</a></p>
     </form>
-</body>
-</html>
+    
+
+{% endblock %}

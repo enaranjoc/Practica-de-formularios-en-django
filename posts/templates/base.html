@@ -11,7 +11,7 @@
     <title>{% block title%} {% endblock %}</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.2/examples/album/">
-    <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style22.css' %}">
 
   </head>
 <body>
@@ -25,21 +25,23 @@
 
             <div class="collapse navbar-collapse" id="navbarsExample07">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    {% if user.is_authenticated %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">{{user|capfirst}}</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'logout' %}">Cerrar sesion</a>
-                        </li>
-                    {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'login' %}">Iniciar sesion</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'registrarUsuario' %}">Registrarse</a>
-                        </li>
-                    {% endif %}
+                    {% block nav %}
+                        {% if user.is_authenticated %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">{{user|capfirst}}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'logout' %}">Cerrar sesion</a>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'login' %}">Iniciar sesion</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'registrarUsuario' %}">Registrarse</a>
+                            </li>
+                        {% endif %}
+                    {% endblock %}
                 </ul>
             </div>
         </div>

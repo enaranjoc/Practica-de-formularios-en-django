@@ -20,7 +20,7 @@
                       <h5 class="card-title fw-bold">{{ post.titulo|title }}</h5>
                       <p class="fw-bold text-capitalize">{{ post.autor }}</p>
                       <p class="card-text mb-1">{{ post.descripcion|capfirst }}</p>
-                      <a href="{% url 'verPost' post.id %}" class="btn btn-outline-primary">Ver mas</a>
+                      <p><a class="btn btn-outline-primary" href="{% url 'verPost' post.id %}">Ver mas &raquo;</a></p>
                     </div>
                 </div>
             </div>
