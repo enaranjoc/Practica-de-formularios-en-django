@@ -24,3 +24,15 @@
     list-style-type: none;
     padding: 0;
 }
+
+.post-img {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat center center;
+    height: 100%;
+    min-height: 300px;
+}
+
+.linea {
+    text-decoration: none;
+  }

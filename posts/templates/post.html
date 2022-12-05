@@ -1,33 +1,64 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% extends 'base.html' %}
+{% block title%} {{post.titulo}} {% endblock %}
+{% block content %}
+   
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+            <div class="card mb-3" >
+                <div class="row g-0">
+                  <div class="col-md-6">
+                    {% load static %}
+                    <div class="post-img"
+                        {% if post.imagen.url == '/media/imagen' %}
+                            style="background-image: url({% static 'img-defaul.png' %});"
+                        {% else %}
+                            style="background-image: url({{post.imagen.url}});"
+                        {% endif %}
+                        >
+                        
+                    </div>
+                  </div>
+                  <div class="col-md-6 d-flex flex-column">
+                    <div class="card-body">
+                      <h5 class="card-title">{{post.titulo|capfirst}}</h5>
+                      <p class="card-text">{{post.descripcion|capfirst}}</p>
+                      <p class="card-text"><small class="text-muted">Escrito por {{post.autor|capfirst}}</small></p>
+                    </div>
+                    <div class="card-footer">
+                        <div class="d-flex justify-content-evenly text-center">
+                            
+                            <div class="p-2 flex-fill border ">
+                                <form action="{% url 'darLike' post.id %}" method="POST">
+                                    {% csrf_token %}
+                                    {% if tieneLike %}
+                                        <button class="flex-fill btn btn-link p-2 linea" type="submit"><i class="fa-solid fa-thumbs-up"></i> {{likes}}</button>
+                                    {% else %}
+                                        <button class="flex-fill btn btn-link p-2 linea" type="submit"><i class="fa-solid fa-thumbs-down"></i> {{likes}}</button>
+                                    {% endif %} 
+                                </form>
+                            </div>
+                            
+                            {% if post.autor == user %}
+                            <div class="p-2 flex-fill border ">
+                                <a href="{% url 'actualizarPost' post.id %}" class="flex-fill p-2 btn btn-link linea"><i class="bi bi-pencil"></i>Editar</a>
+                            </div>
+                            <div class="p-2 flex-fill border ">
+                                <a href="{% url 'eliminarPost' post.id %}" class="flex-fill p-2 btn btn-link linea"><i class="bi bi-trash"></i>Eliminar</a>
+                            </div>
+                            {% endif %}
+                        </div>
+                            
+                    </div>
+                  </div>
+                </div>
+            </div>
 
-    <title>{{post.titulo}}</title>
-</head>
-<body>
-    <img src="{{ post.imagen.url }}" alt="" width="45px" height="45px">
-    <h1>{{post.titulo}}</h1>
-    <p>{{post.descripcion}}</p>
-    <p>{{post.cantidadLIkes}} likes</p>
+            
+        </div>
+        <div class="col-md-1"></div>
+    </div>
 
-    <form action="{% url 'darLike' post.id %}" method="POST">
-        {% csrf_token %}
-        {% if tieneLike %}
-            <button type="submit"><i class="fa-solid fa-thumbs-down"></i></button>
-        {% else %}
-            <button type="submit"><i class="fa-solid fa-thumbs-up"></i></button>
-        {% endif %} 
-    </form>
     
-    <!-- Condicion para que solo el autor del post pueda actualizar o eliminar el post -->
-    {% if post.autor == user %}
-    <a href="{% url 'actualizarPost' post.id %}">Editar</a>
-    <a href="{% url 'eliminarPost' post.id %}">Eliminar</a>
-    {% endif %}
-
-    <script src="https://kit.fontawesome.com/26084d939f.js" crossorigin="anonymous"></script>
-</body>
-</html>  
+{% endblock %}
+   
