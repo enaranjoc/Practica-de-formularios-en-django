@@ -7,7 +7,9 @@ from django.core.paginator import Paginator
 from .models import Post
 from .forms import PostForm
 
-
+from django.template.loader import get_template
+from django.core.mail import EmailMultiAlternatives
+import threading
 
 # Create your views here.
 def index(request):
@@ -102,3 +104,42 @@ def darLike(request, pk):
         return redirect('/post/' + str(post.id))
     else:
         raise Http404()
+
+
+# Envio de correo 
+# Tuturial: https://www.youtube.com/watch?v=e7NEpX12xDI&t=1801s&ab_channel=codigofacilito
+def index2(request):
+    return render(request, 'index2.html', {})
+
+def create_mail(email, subject, template_path,  context):
+    template = get_template(template_path)
+    content = template.render(context)
+
+    mail = EmailMultiAlternatives(
+        subject= subject,
+        body='',
+        from_email='enaranjoc.en99@gmail.com',
+        to=[email]
+    )
+    mail.attach_alternative(content, 'text/html')
+    return mail
+
+
+def send_welcome_mail():
+    welcome_mail = create_mail(
+        'ariel99.en@gmail.com',
+        'Prueba de django',
+        'welcome.html',
+        {
+            'username':'Erick Naranjo'
+        }
+    )
+
+    welcome_mail.send(fail_silently=False)
+
+def send_mail(request):
+    thread = threading.Thread(
+        target=send_welcome_mail
+    )
+    thread.start()
+    return redirect('index2')

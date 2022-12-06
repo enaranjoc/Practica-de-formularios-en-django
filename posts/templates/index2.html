@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title%} Envio de correo {% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row mt-2">
+            <div class="col">
+                <a href="{% url 'send_mail' %}" class="btn btn-primary text-white">Enviar mail</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

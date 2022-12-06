@@ -32,4 +32,6 @@ urlpatterns = [
     path('actualizar/<int:pk>', views.actualizarPost, name='actualizarPost'),
     path('eliminar/<int:pk>', views.eliminarPost, name='eliminarPost'),
     path('like/<int:pk>', views.darLike, name='darLike'),
+    path('index2', views.index2, name='index2'),
+    path('send/mail', views.send_mail, name='send_mail'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) # Para trabajar con archivos
